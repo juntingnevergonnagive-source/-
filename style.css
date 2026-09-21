@@ -1,4 +1,15 @@
-/* 自訂字體分類 */
+/* 全域底色與基礎設定 - 確保 background 絕不變白 */
+html, body {
+  background-color: #030712 !important;
+  color: #f1f5f9;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* 自訂字體 */
 .font-mystic-en {
   font-family: 'Cinzel Decorative', serif;
 }
@@ -7,13 +18,25 @@
   font-family: 'Noto Serif TC', serif;
 }
 
-/* 金屬耀光特效 */
+/* 帥氣發光特效 */
 .glow-text-gold {
-  text-shadow: 0 0 10px rgba(245, 158, 11, 0.6), 0 0 20px rgba(217, 119, 6, 0.4), 0 0 30px rgba(180, 83, 9, 0.3);
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.7), 0 0 25px rgba(217, 119, 6, 0.5), 0 0 40px rgba(180, 83, 9, 0.3);
 }
 
 .glow-text-purple {
-  text-shadow: 0 0 10px rgba(168, 85, 247, 0.6), 0 0 20px rgba(147, 51, 234, 0.4);
+  text-shadow: 0 0 12px rgba(168, 85, 247, 0.7), 0 0 25px rgba(147, 51, 234, 0.5);
+}
+
+/* 塔羅卡牌 3D 浮動與紫金流光特效 */
+.tarot-card {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 0 15px rgba(147, 51, 234, 0.25), inset 0 0 15px rgba(245, 158, 11, 0.1);
+}
+
+.tarot-card:hover {
+  transform: translateY(-8px) scale(1.04);
+  box-shadow: 0 12px 30px rgba(168, 85, 247, 0.4), 0 0 20px rgba(245, 158, 11, 0.5), inset 0 0 20px rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.9);
 }
 
 /* 滾動條美化 */
@@ -21,12 +44,13 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #030712;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2e1065;
+  background: #3b0764;
   border-radius: 4px;
+  border: 1px solid rgba(245, 158, 11, 0.3);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #4c1d95;
+  background: #581c87;
 }
