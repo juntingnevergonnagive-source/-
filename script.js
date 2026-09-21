@@ -1,239 +1,241 @@
-// 塔羅牌資料庫
-const TAROT_DECK = [
-  { name: "愚者 (The Fool)", icon: "fa-solid fa-feather", upright: "新的開始、冒險、自由、無限可能", reversed: "輕率、冒險過度、盲目、猶豫不決" },
-  { name: "魔術師 (The Magician)", icon: "fa-solid fa-wand-magic-sparkles", upright: "創造力、技巧、主動性、實現目標", reversed: "欺騙、才能未發揮、缺乏計劃、意志薄弱" },
-  { name: "女祭司 (The High Priestess)", icon: "fa-solid fa-book-bookmark", upright: "直覺、潛意識、智慧、內省", reversed: "情緒化、壓抑、表面化、忽視直覺" },
-  { name: "女皇 (The Empress)", icon: "fa-solid fa-crown", upright: "豐盛、母愛、自然、創造力、繁榮", reversed: "過度依賴、浪費、缺乏安全感、阻礙成長" },
-  { name: "皇帝 (The Emperor)", icon: "fa-solid fa-chess-king", upright: "權威、結構、穩定、領導力、控制", reversed: "專制、控制狂、缺乏紀律、不靈活" },
-  { name: "教皇 (The Hierophant)", icon: "fa-solid fa-place-of-worship", upright: "傳統、信仰、指引、體制、學習", reversed: "打破常規、固執、盲從、非傳統信念" },
-  { name: "戀人 (The Lovers)", icon: "fa-solid fa-heart", upright: "愛、和諧、選擇、價值觀契合", reversed: "不和諧、選擇困難、價值觀衝突、逃避責任" },
-  { name: "戰車 (The Chariot)", icon: "fa-solid fa-shield-halved", upright: "意志力、勝利、專注、突破困境", reversed: "失控、方向感缺失、衝動、挫折" },
-  { name: "力量 (Strength)", icon: "fa-solid fa-hand-fist", upright: "勇氣、耐心、包容、內在力量", reversed: "自我懷疑、軟弱、情緒失控、自信不足" },
-  { name: "隱士 (The Hermit)", icon: "fa-solid fa-lantern", upright: "尋求真理、內省、孤獨、智慧指引", reversed: "孤立過度、退縮、偏執、拒絕協助" },
-  { name: "命運之輪 (Wheel of Fortune)", icon: "fa-solid fa-arrows-spin", upright: "轉機、好運、週期變遷、命中注定", reversed: "抗拒改變、不幸、低潮、意外波折" },
-  { name: "正義 (Justice)", icon: "fa-solid fa-scale-balanced", upright: "公平、真理、因果、明智決策", reversed: "不公、偏見、避責、延誤判定" },
-  { name: "倒吊人 (The Hanged Man)", icon: "fa-solid fa-person-arrow-down-to-line", upright: "換位思考、犧牲、等待、啟示", reversed: "無謂犧牲、拖延、抗拒、原地踏步" },
-  { name: "死神 (Death)", icon: "fa-solid fa-skull", upright: "結束、轉變、新生、舊局告終", reversed: "抗拒改變、恐懼未知、拖泥帶水" },
-  { name: "節制 (Temperance)", icon: "fa-solid fa-glass-water", upright: "平衡、調和、耐心、適度與和諧", reversed: "失衡、過度、缺乏自律、衝突" },
-  { name: "惡魔 (The Devil)", icon: "fa-solid fa-spaghetti-monster-flying", upright: "束縛、慾望、物質誘惑、執著", reversed: "擺脫束縛, 覺醒, 解放, 恢復自由" },
-  { name: "高塔 (The Tower)", icon: "fa-solid fa-bolt", upright: "驟變、突發衝擊、破舊立新、啟示", reversed: "險境避開、恐懼改變、強行延緩衝擊" },
-  { name: "星星 (The Star)", icon: "fa-solid fa-star-of-david", upright: "希望、靈感、療癒、平靜、信心", reversed: "絕望、缺乏信心、消極、期望落空" },
-  { name: "月亮 (The Moon)", icon: "fa-solid fa-moon", upright: "不安、潛意識、混亂、直覺與幻象", reversed: "迷霧散去、解開誤會、克服恐懼" },
-  { name: "太陽 (The Sun)", icon: "fa-solid fa-sun", upright: "成功、喜悅、活力、清晰、光明", reversed: "暫時低潮、過度樂觀、成功受阻" },
-  { name: "審判 (Judgement)", icon: "fa-solid fa-bell", upright: "覺醒、召喚、重大決定、自我反省", reversed: "自我懷疑、逃避召喚、悔恨、拖延" },
-  { name: "世界 (The World)", icon: "fa-solid fa-earth-americas", upright: "圓滿、完成、成就、新階段開始", reversed: "未完成、遺憾、缺乏收尾、延遲" }
+// 完整 78 張塔羅牌資料庫 (22 張大阿爾克那 + 56 張小阿爾克那)
+const tarotDeck = [
+  // ---------------- 大阿爾克那 (Major Arcana 22張) ----------------
+  { name: "0. 愚者 (The Fool)", keyword: "新的開始、冒險、自由、純真" },
+  { name: "I. 魔術師 (The Magician)", keyword: "創造力、技能、意志力、資源" },
+  { name: "II. 女祭司 (The High Priestess)", keyword: "直覺、潛意識、智慧、神祕" },
+  { name: "III. 皇后 (The Empress)", keyword: "豐盛、滋養、愛、母性" },
+  { name: "IV. 皇帝 (The Emperor)", keyword: "權威、結構、控制、穩定" },
+  { name: "V. 教皇 (The Hierophant)", keyword: "傳統、信仰、指引、規範" },
+  { name: "VI. 戀人 (The Lovers)", keyword: "選擇、結合、愛、價值觀" },
+  { name: "VII. 戰車 (The Chariot)", keyword: "意志力、勝利、自律、克服困難" },
+  { name: "VIII. 力量 (Strength)", keyword: "勇氣、耐心、包容、內在力量" },
+  { name: "IX. 隱士 (The Hermit)", keyword: "內省、尋求智慧、孤獨、引路" },
+  { name: "X. 命運之輪 (Wheel of Fortune)", keyword: "轉折點、運氣、週期、契機" },
+  { name: "XI. 正義 (Justice)", keyword: "公平、真相、因果、決策" },
+  { name: "XII. 倒吊人 (The Hanged Man)", keyword: "換位思考、等待、犧牲、臣服" },
+  { name: "XIII. 死神 (Death)", keyword: "結束、轉化、重生、新階段" },
+  { name: "XIV. 節制 (Temperance)", keyword: "平衡、和諧、調和、耐心" },
+  { name: "XV. 惡魔 (The Devil)", keyword: "執著、慾望、束縛、物質" },
+  { name: "XVI. 塔 (The Tower)", keyword: "突變、破除偽裝、覺醒、重塑" },
+  { name: "XVII. 星星 (The Star)", keyword: "希望、靈感、療癒、信心" },
+  { name: "XVIII. 月亮 (The Moon)", keyword: "不安、潛意識、幻象、直覺" },
+  { name: "XIX. 太陽 (The Sun)", keyword: "喜悅、成功、活力、光明" },
+  { name: "XX. 審判 (Judgment)", keyword: "召喚、覺醒、反省、重大決定" },
+  { name: "XXI. 世界 (The World)", keyword: "圓滿、完成、旅程終點、整體" },
+
+  // ---------------- 權杖牌組 (Wands - 火元素 14張) ----------------
+  { name: "權杖首牌 (Ace of Wands)", keyword: "靈感、新熱情、衝勁、潛力" },
+  { name: "權杖二 (Two of Wands)", keyword: "規劃、遠見、抉擇、探索" },
+  { name: "權杖三 (Three of Wands)", keyword: "擴張、遠景、進展、準備出發" },
+  { name: "權杖四 (Four of Wands)", keyword: "慶祝、和諧、奠基、家園" },
+  { name: "權杖五 (Five of Wands)", keyword: "競爭、衝突、意見不合、挑戰" },
+  { name: "權杖六 (Six of Wands)", keyword: "勝利、榮譽、認同、自信" },
+  { name: "權杖七 (Seven of Wands)", keyword: "堅守陣地、防衛、不屈不撓" },
+  { name: "權杖八 (Eight of Wands)", keyword: "迅速行動、訊息、變化、進展" },
+  { name: "權杖九 (Nine of Wands)", keyword: "防備、堅持、最後防線、韌性" },
+  { name: "權杖十 (Ten of Wands)", keyword: "重負、壓力、責任、過勞" },
+  { name: "權杖侍從 (Page of Wands)", keyword: "探索、好奇心、熱情消息、學習" },
+  { name: "權杖騎士 (Knight of Wands)", keyword: "冒險、衝勁、行動派、熱血" },
+  { name: "權杖王后 (Queen of Wands)", keyword: "自信、魅力、熱情、獨立" },
+  { name: "權杖國王 (King of Wands)", keyword: "領導力、願景、果斷、企業家精神" },
+
+  // ---------------- 聖杯牌組 (Cups - 水元素 14張) ----------------
+  { name: "聖杯首牌 (Ace of Cups)", keyword: "新情感、愛、直覺、心靈豐沛" },
+  { name: "聖杯二 (Two of Cups)", keyword: "夥伴關係、吸引力、互信、合作" },
+  { name: "聖杯三 (Three of Cups)", keyword: "歡慶、友誼、聚會、分享" },
+  { name: "聖杯四 (Four of Cups)", keyword: "冷漠、倦怠、忽視機會、沉思" },
+  { name: "聖杯五 (Five of Cups)", keyword: "失落、悲傷、懊悔、焦點偏差" },
+  { name: "聖杯六 (Six of Cups)", keyword: "懷念、童心、贈予、溫暖回憶" },
+  { name: "聖杯七 (Seven of Cups)", keyword: "幻想、多種選擇、迷茫、白日夢" },
+  { name: "聖杯八 (Eight of Cups)", keyword: "轉身離開、尋求更高追求、放手" },
+  { name: "聖杯九 (Nine of Cups)", keyword: "願望實現、滿足、享受、物質快樂" },
+  { name: "聖杯十 (Ten of Cups)", keyword: "美滿家庭、情感圓滿、和諧幸福" },
+  { name: "聖杯侍從 (Page of Cups)", keyword: "感性訊息、創意、直覺萌芽" },
+  { name: "聖杯騎士 (Knight of Cups)", keyword: "浪漫、追求者、理想主義、邀請" },
+  { name: "聖杯王后 (Queen of Cups)", keyword: "同理心、溫柔、直覺強大、滋養" },
+  { name: "聖杯國王 (King of Kings)", keyword: "情感成熟、掌控情緒、包容、智慧" },
+
+  // ---------------- 寶劍牌組 (Swords - 風元素 14張) ----------------
+  { name: "寶劍首牌 (Ace of Swords)", keyword: "突破、清晰思考、真相、心智力量" },
+  { name: "寶劍二 (Two of Swords)", keyword: "僵局、逃避決定、抗拒真相" },
+  { name: "寶劍三 (Three of Swords)", keyword: "心碎、傷痛、悲傷、言語傷害" },
+  { name: "寶劍四 (Four of Swords)", keyword: "休息、休養、沉思、恢復能量" },
+  { name: "寶劍五 (Five of Swords)", keyword: "爭執、兩敗俱傷、自私勝出" },
+  { name: "寶劍六 (Six of Swords)", keyword: "療癒過渡、渡過難關、平息" },
+  { name: "寶劍七 (Seven of Swords)", keyword: "不誠實、策略、私下行動、逃避責任" },
+  { name: "寶劍八 (Eight of Swords)", keyword: "受困、自我設限、無助感" },
+  { name: "寶劍九 (Nine of Swords)", keyword: "焦慮、噩夢、過度擔憂、失眠" },
+  { name: "寶劍十 (Ten of Swords)", keyword: "底線、結束、谷底反彈、解脫" },
+  { name: "寶劍侍從 (Page of Swords)", keyword: "警覺、求知慾、搜集資訊、敏銳" },
+  { name: "寶劍騎士 (Knight of Swords)", keyword: "急躁、勇往直前、犀利、果斷" },
+  { name: "寶劍王后 (Queen of Swords)", keyword: "理性、獨立思考、清晰邊界、直言" },
+  { name: "寶劍國王 (King of Swords)", keyword: "專業權威、公正決策、邏輯強大" },
+
+  // ---------------- 星幣/金幣牌組 (Pentacles - 土元素 14張) ----------------
+  { name: "星幣首牌 (Ace of Pentacles)", keyword: "新財務機會、實質回報、繁榮" },
+  { name: "星幣二 (Two of Pentacles)", keyword: "平衡資源、多工作業、適應力" },
+  { name: "星幣三 (Three of Pentacles)", keyword: "團隊合作、技能展現、建立基礎" },
+  { name: "星幣四 (Four of Pentacles)", keyword: "保守、保守資產、拒絕改變" },
+  { name: "星幣五 (Five of Pentacles)", keyword: "物質匱乏、孤立無援、經濟困境" },
+  { name: "星幣六 (Six of Pentacles)", keyword: "施與受、平衡收支、慷慨援助" },
+  { name: "星幣七 (Seven of Pentacles)", keyword: "耐心等待、評估成果、長期投資" },
+  { name: "星幣八 (Eight of Pentacles)", keyword: "專注精進、勤奮、技能提升" },
+  { name: "星幣九 (Nine of Pentacles)", keyword: "財務獨立、自足、享受成果" },
+  { name: "星幣十 (Ten of Pentacles)", keyword: "家族財富、長遠安定、傳承" },
+  { name: "星幣侍從 (Page of Pentacles)", keyword: "學習實務、新工作機會、務實" },
+  { name: "星幣騎士 (Knight of Pentacles)", keyword: "踏實、負責、勤奮不懈、可靠" },
+  { name: "星幣王后 (Queen of Pentacles)", keyword: "務實滋養、豐富家園、安全感" },
+  { name: "星幣國王 (King of Pentacles)", keyword: "商業成功、物質豐盛、穩定掌控" }
 ];
 
-// 牌陣配置
-const SPREAD_CONFIGS = {
-  single: { count: 1, labels: ["當前指引"], promptTitle: "單牌指引" },
-  timeline: { count: 3, labels: ["過去脈絡", "現在狀態", "未來趨勢"], promptTitle: "時間之流牌陣（過去 / 現在 / 未來）" },
-  choices: { count: 3, labels: ["選項 A 情況", "選項 B 情況", "綜合建議"], promptTitle: "二選一二元解析牌陣（選項A / 選項B / 建議）" }
-};
-
-let currentDrawnCards = [];
-
-// 抽牌主處理邏輯
+// 處理抽牌邏輯
 async function handleDrawCard() {
-  const questionInput = document.getElementById("userQuestion").value.trim();
-  if (!questionInput) {
+  const userQuestion = document.getElementById('userQuestion').value.trim();
+  const apiKey = document.getElementById('apiKeyInput').value.trim();
+  const spreadType = document.querySelector('input[name="spreadType"]:checked').value;
+
+  if (!userQuestion) {
     alert("請先輸入你想要請教塔羅的問題喔！");
     return;
   }
 
-  const selectedSpread = document.querySelector('input[name="spreadType"]:checked').value;
-  const config = SPREAD_CONFIGS[selectedSpread];
+  if (!apiKey) {
+    alert("請先貼上你的 Gemini API Key！");
+    return;
+  }
 
-  const drawBtn = document.getElementById("drawBtn");
-  drawBtn.disabled = true;
-  drawBtn.classList.add("opacity-50", "cursor-not-allowed");
+  // 1. 根據牌陣決定抽牌張數
+  let cardCount = spreadType === 'single' ? 1 : 3;
+  let selectedCards = [];
+  let shuffled = [...tarotDeck].sort(() => 0.5 - Math.random());
 
-  // 1. 不重複隨機抽牌
-  currentDrawnCards = [];
-  const deckCopy = [...TAROT_DECK];
-  for (let i = 0; i < config.count; i++) {
-    const randomIndex = Math.floor(Math.random() * deckCopy.length);
-    const card = deckCopy.splice(randomIndex, 1)[0];
-    const isReversed = Math.random() < 0.5;
-    currentDrawnCards.push({
-      card,
-      isReversed,
-      label: config.labels[i]
+  for (let i = 0; i < cardCount; i++) {
+    const isReversed = Math.random() < 0.3; // 30% 機率逆位
+    selectedCards.push({
+      ...shuffled[i],
+      isReversed: isReversed,
+      positionLabel: getPositionLabel(spreadType, i)
     });
   }
 
-  // 2. 渲染卡牌 HTML
-  const cardsContainer = document.getElementById("cardsContainer");
-  cardsContainer.innerHTML = "";
+  // 2. 顯示卡牌區
+  renderCards(selectedCards);
+  document.getElementById('cardDisplayArea').classList.remove('hidden');
+  
+  // 3. 顯示 AI 解牌區並載入中
+  document.getElementById('resultArea').classList.remove('hidden');
+  document.getElementById('loadingSpinner').classList.remove('hidden');
+  document.getElementById('aiReadingContent').classList.add('hidden');
+  
+  // 平滑滾動到卡牌區
+  document.getElementById('cardDisplayArea').scrollIntoView({ behavior: 'smooth' });
 
-  currentDrawnCards.forEach((item, index) => {
-    const cardHtml = `
-      <div class="flex flex-col items-center space-y-2">
-        <span class="text-xs text-amber-300 bg-amber-950/60 border border-amber-800/80 px-2.5 py-1 rounded-full font-semibold">
-          ${item.label}
-        </span>
-        <div id="card-${index}" class="tarot-card ${item.isReversed ? 'card-reversed' : ''} w-48 sm:w-52 h-80 sm:h-96 cursor-pointer" onclick="flipCard(${index})">
-          <div class="card-inner relative w-full h-full text-center shadow-2xl rounded-2xl">
-            <!-- 牌背 -->
-            <div class="card-back absolute w-full h-full rounded-2xl p-3 flex flex-col items-center justify-between border-2 border-amber-500/40">
-              <div class="w-full h-full border border-amber-500/20 rounded-xl flex flex-col items-center justify-between p-4 bg-purple-950/20">
-                <i class="fa-solid fa-sun text-amber-400/40 text-xl"></i>
-                <div class="text-center">
-                  <i class="fa-solid fa-compass text-amber-400/60 text-3xl mb-2 animate-spin-slow"></i>
-                  <p class="text-xs text-amber-200/60 font-serif tracking-widest">點擊翻牌</p>
-                </div>
-                <i class="fa-solid fa-moon text-amber-400/40 text-xl"></i>
-              </div>
-            </div>
-            <!-- 牌面 -->
-            <div class="card-front absolute w-full h-full rounded-2xl border-2 border-amber-400/60 flex flex-col justify-between p-4 bg-gradient-to-b from-slate-900 via-purple-950 to-slate-900">
-              <div class="text-right">
-                <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                  ${item.isReversed ? '逆位' : '正位'}
-                </span>
-              </div>
-              <div class="my-auto text-center space-y-3">
-                <div class="card-icon text-4xl sm:text-5xl text-amber-300">
-                  <i class="${item.card.icon}"></i>
-                </div>
-                <h3 class="font-serif text-lg sm:text-xl font-bold text-amber-100">${item.card.name}</h3>
-                <p class="text-[11px] text-slate-300 px-1 line-clamp-2">
-                  ${item.isReversed ? item.card.reversed : item.card.upright}
-                </p>
-              </div>
-              <div class="text-center text-[10px] text-amber-400/60 tracking-wider uppercase font-serif">
-                ARCANE TAROT
-              </div>
-            </div>
-          </div>
+  // 4. 呼叫 Gemini API 進行解牌
+  await fetchGeminiReading(apiKey, userQuestion, selectedCards);
+}
+
+// 取得牌陣位置名稱
+function getPositionLabel(spreadType, index) {
+  if (spreadType === 'single') return '指引牌';
+  if (spreadType === 'timeline') {
+    return ['過去脈絡', '現在狀態', '未來趨勢'][index];
+  }
+  if (spreadType === 'choices') {
+    return ['選項 A 狀態', '選項 B 狀態', '綜合智慧建議'][index];
+  }
+  return `第 ${index + 1} 張`;
+}
+
+// 渲染卡牌 HTML
+function renderCards(cards) {
+  const container = document.getElementById('cardsContainer');
+  container.innerHTML = '';
+
+  cards.forEach((card) => {
+    const cardEl = document.createElement('div');
+    cardEl.className = 'w-48 h-72 bg-slate-950/90 border-2 border-amber-500/50 rounded-xl p-4 flex flex-col justify-between items-center text-center shadow-[0_0_15px_rgba(245,158,11,0.2)] transition-all duration-500 hover:scale-105 backdrop-blur-md';
+    
+    cardEl.innerHTML = `
+      <div class="text-xs text-amber-400 font-bold tracking-widest uppercase border-b border-amber-500/30 pb-1.5 w-full font-serif-tc">
+        ${card.positionLabel}
+      </div>
+      <div class="my-auto">
+        <div class="text-3xl mb-2">${card.isReversed ? '🙃' : '🃏'}</div>
+        <div class="font-serif-tc text-base font-bold text-amber-100">
+          ${card.name}
+        </div>
+        <div class="text-xs font-bold ${card.isReversed ? 'text-purple-400' : 'text-amber-300'} mt-1">
+          ${card.isReversed ? '【逆位】' : '【正位】'}
         </div>
       </div>
+      <div class="text-[11px] text-slate-300 border-t border-slate-800 pt-2 w-full font-light">
+        ${card.keyword}
+      </div>
     `;
-    cardsContainer.insertAdjacentHTML('beforeend', cardHtml);
+    container.appendChild(cardEl);
   });
-
-  document.getElementById("cardDisplayArea").classList.remove("hidden");
-
-  // 3. 逐張翻牌動畫
-  currentDrawnCards.forEach((_, index) => {
-    setTimeout(() => {
-      document.getElementById(`card-${index}`)?.classList.add("flipped");
-    }, 300 + index * 250);
-  });
-
-  // 4. 啟動 AI 解牌
-  await generateAIInterpretation(questionInput, config, currentDrawnCards);
-
-  drawBtn.disabled = false;
-  drawBtn.classList.remove("opacity-50", "cursor-not-allowed");
 }
 
-// 手動翻牌
-function flipCard(index) {
-  const cardElement = document.getElementById(`card-${index}`);
-  if (cardElement) {
-    cardElement.classList.toggle("flipped");
-  }
-}
-
-// 呼叫 API 進行個人化解讀
-async function generateAIInterpretation(question, config, drawnCards) {
-  const resultArea = document.getElementById("resultArea");
-  const loadingSpinner = document.getElementById("loadingSpinner");
-  const aiContent = document.getElementById("aiReadingContent");
-  const customApiKey = document.getElementById("apiKeyInput").value.trim();
-
-  resultArea.classList.remove("hidden");
-  loadingSpinner.classList.remove("hidden");
-  aiContent.classList.add("hidden");
+// 呼叫 Gemini API
+async function fetchGeminiReading(apiKey, question, cards) {
+  const cardsText = cards.map(c => `・${c.positionLabel}：${c.name}（${c.isReversed ? '逆位' : '正位'}）- 核心語意：${c.keyword}`).join('\n');
   
-  resultArea.scrollIntoView({ behavior: 'smooth' });
+  const prompt = `你是一位精通塔羅牌與心理學的專業塔羅占卜師。
+請根據問卜者的問題與抽出的牌陣，提供一段溫暖、深刻且具有實用指引價值的解牌分析。
 
-  // 彙整牌組資訊 Prompt
-  const cardsSummary = drawnCards.map(item => 
-    `・【${item.label}】：${item.card.name}（${item.isReversed ? '逆位' : '正位'}）- 象徵：${item.isReversed ? item.card.reversed : item.card.upright}`
-  ).join("\n");
+【問卜者問題】：${question}
 
-  const prompt = `你是一位專業、溫暖且具備深刻洞察力的塔羅占卜師。
-使用者提出的問題是：『${question}』
-使用牌陣為：『${config.promptTitle}』
+【抽出的牌陣】：
+${cardsText}
 
-抽出的塔羅牌如下：
-${cardsSummary}
-
-請針對使用者的『具體問題』，結合上述牌陣與牌義（包含正逆位），進行一份條理分明、有深度且具備實用建議的個人化解讀。
-
-解讀結構請包含：
-1. **牌陣整體能量概述**：說明這組牌陣為這個問題帶來的整體氣氛或核心主題。
-2. **各位置詳細剖析**：針對牌陣中的每一個位置（如過去/現在/未來或選項A/B），分析個別牌面對於問題的啟示。
-3. **綜合解答與建議**：直接回應使用者的提問，並給予 2-3 點可行、積極的行動指引。
-
-語氣請保持優雅、同理、充滿啟發性，並使用 Markdown 格式（可用 **粗體** 或列點）。格式請直接輸出內文，無需額外引號。`;
+請用繁體中文回答，架構包含：
+1. 🌟 **總體能量回應**：針對問題簡述當前的能量狀態。
+2. 🔮 **牌面詳細剖析**：逐張解析每張牌在此位置代表的涵義。
+3. 💡 **命運與行動建議**：給予問卜者具體可執行的指引與心態調整建議。`;
 
   try {
-    const apiKey = customApiKey || "AIzaSyDummyKey_ForTestOnly"; 
-    
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash:generateContent?key=${apiKey}`, {
-      method: "POST",
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }]
+        contents: [{
+          parts: [{ text: prompt }]
+        }]
       })
     });
 
-    if (!response.ok) {
-      throw new Error(`API 請求失敗 (HTTP ${response.status})`);
+    const data = await response.json();
+
+    if (data.error) {
+      throw new Error(data.error.message || "API 金鑰無效或請求失敗");
     }
 
-    const data = await response.json();
-    const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || "抱歉，目前無法取得解牌結果，請稍後再試。";
+    const aiReply = data.candidates[0].content.parts[0].text;
     
-    loadingSpinner.classList.add("hidden");
-    aiContent.innerHTML = formatMarkdown(rawText);
-    aiContent.classList.remove("hidden");
+    // 格式化 AI 解讀內容
+    const formattedHtml = aiReply
+      .split('\n\n')
+      .map(p => `<p class="mb-3 leading-relaxed">${p.replace(/\n/g, '<br>')}</p>`)
+      .join('');
+
+    document.getElementById('loadingSpinner').classList.add('hidden');
+    const contentDiv = document.getElementById('aiReadingContent');
+    contentDiv.innerHTML = formattedHtml;
+    contentDiv.classList.remove('hidden');
 
   } catch (error) {
     console.error("Gemini API Error:", error);
-    loadingSpinner.classList.add("hidden");
-    
-    // 離線預設 Fallback
-    const fallbackText = `
-      <h3>🔮 牌陣整體能量概述</h3>
-      <p>針對你所詢問的「<strong>${question}</strong>」，這次抽出的牌陣揭示了重要的能量流動與轉折訊息。</p>
-      
-      <h3>✨ 各位置詳細剖析</h3>
-      <ul>
-        ${drawnCards.map(item => `
-          <li><strong>${item.label} - ${item.card.name} (${item.isReversed ? '逆位' : '正位'})：</strong>
-          代表「${item.isReversed ? item.card.reversed : item.card.upright}」，提示在此環節中需要注意內部心態調整與外部環境變化。</li>
-        `).join('')}
-      </ul>
-      
-      <h3>💡 綜合解答與建議</h3>
-      <p>這組牌陣提醒你保持順應與自信。釐清當前真正的瓶頸，採取漸進式的行動。</p>
-      <ul>
-        <li><strong>直面內心：</strong>審視當前選擇背後真正驅動你的動機。</li>
-        <li><strong>穩健前行：</strong>不急於一時，按照自己的節奏進行改變。</li>
-      </ul>
-      <p class="text-xs text-amber-400/80 mt-4">（註：此為離線示範解讀。若要取得 Gemini AI 的即時動態解讀，請於上方設定區貼上有效的 Gemini API Key。）</p>
+    document.getElementById('loadingSpinner').classList.add('hidden');
+    const contentDiv = document.getElementById('aiReadingContent');
+    contentDiv.innerHTML = `
+      <div class="p-4 bg-red-950/40 border border-red-500/50 rounded-xl text-red-200 text-sm">
+        <p class="font-bold">❌ 解牌失敗：${error.message}</p>
+        <p class="mt-1 text-xs text-slate-400">請檢查：<br>1. API Key 是否貼錯（開頭應為 AIzaSy...，且不要有前後空格）<br>2. 是否已在 Google AI Studio 開通帳號權限。</p>
+      </div>
     `;
-    
-    aiContent.innerHTML = fallbackText;
-    aiContent.classList.remove("hidden");
+    contentDiv.classList.remove('hidden');
   }
-}
-
-// Markdown 格式化轉換工具
-function formatMarkdown(text) {
-  return text
-    .replace(/### (.*)/g, '<h3>$1</h3>')
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em>$1</em>')
-    .replace(/^\* (.*)/gm, '<li>$1</li>')
-    .replace(/(<li>.*<\/li>)/s, '<ul>$1<\/ul>')
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/^/, '<p>')
-    .replace(/$/, '</p>');
 }
