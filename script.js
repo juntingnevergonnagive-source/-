@@ -292,7 +292,7 @@ function renderCards(cards) {
   });
 }
 
-// 呼叫 Gemini API (相容 Gemini 2.5 / 2.0 最新官方模型 endpoint)
+// 呼叫 Gemini API (支援最廣泛的模型名稱自動切換)
 async function fetchGeminiReading(apiKey, question, cards) {
   const cardsText = cards.map(c => `・${c.positionLabel}：${c.name}（${c.isReversed ? '逆位' : '正位'}）- 核心語意：${c.keyword}`).join('\n');
   
@@ -311,18 +311,20 @@ ${cardsText}
 
 請保持文筆溫暖、睿智、富含啟發性與心理指引價值。`;
 
-  // 嘗試最新標準模型順序
+  // 嘗試常見模型清單
   const modelList = [
-    'gemini-2.5-flash',
+    'gemini-1.5-flash',
+    'gemini-1.5-pro',
     'gemini-2.0-flash',
-    'gemini-2.5-pro'
+    'gemini-2.5-flash'
   ];
 
   let success = false;
   let lastErrorMessage = "";
+  const cleanKey = apiKey.trim();
 
   for (const modelName of modelList) {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey.trim()}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${cleanKey}`;
 
     try {
       const response = await fetch(url, {
@@ -336,7 +338,7 @@ ${cardsText}
       const data = await response.json();
 
       if (data.error) {
-        lastErrorMessage = data.error.message || JSON.stringify(data.error);
+        lastErrorMessage = `[${modelName}] ${data.error.message || JSON.stringify(data.error)}`;
         continue;
       }
 
@@ -367,7 +369,7 @@ ${cardsText}
       <div class="p-4 bg-red-950/50 border border-red-500/60 rounded-xl text-red-200 text-sm space-y-2">
         <p class="font-bold text-red-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 解牌連線失敗</p>
         <p class="text-xs text-slate-300">錯誤訊息：${lastErrorMessage}</p>
-        <p class="text-xs text-slate-400">請檢查：<br>1. API Key 前後是否有複製到多餘空白字符<br>2. 是否已在 Google AI Studio 建立並啟用 key。</p>
+        <p class="text-xs text-slate-400">請嘗試：<br>1. 按 Ctrl+F5 (Mac: Cmd+Shift+R) 清除瀏覽器快取<br>2. 確保 API Key 前後無複製到多餘空白字符。</p>
       </div>
     `;
     contentDiv.classList.remove('hidden');
@@ -377,4 +379,4 @@ ${cardsText}
 // 頁面載入觸發星空繪製
 window.addEventListener('DOMContentLoaded', () => {
   initStarfield();
-});V
+});
