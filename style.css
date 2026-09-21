@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Cinzel:wght@500;700&display=swap');
+
+body {
+  font-family: 'Noto Serif TC', serif, system-ui;
+  background-color: #030712;
+}
+
+/* 牌陣選項選中效果 */
+.spread-option:has(input:checked) {
+  border-color: #f59e0b;
+  background-color: rgba(120, 53, 15, 0.15);
+}
+
+/* 3D 翻牌動畫核心樣式 */
+.tarot-card {
+  perspective: 1000px;
+}
+
+.card-inner {
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+}
+
+.tarot-card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-back, .card-front {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-back {
+  background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+}
+
+.card-front {
+  transform: rotateY(180deg);
+}
+
+/* 逆位樣式調整 */
+.card-reversed .card-icon {
+  transform: rotate(180deg);
+}
+
+/* Markdown 生成風格修飾 */
+#aiReadingContent p {
+  margin-bottom: 0.85rem;
+}
+
+#aiReadingContent h3 {
+  color: #fde047;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-top: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+#aiReadingContent ul {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  margin-bottom: 0.85rem;
+}
+
+#aiReadingContent li {
+  margin-bottom: 0.25rem;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 12s linear infinite;
+}
