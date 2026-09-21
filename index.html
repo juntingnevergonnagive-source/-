@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" class="bg-slate-950">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,10 +16,10 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- 自訂 CSS：確保放在 Tailwind 之後以正確覆蓋背景 -->
+  <!-- 自訂 CSS：放 Tailwind 之後確保正確覆蓋樣式 -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="min-h-screen text-slate-100 flex flex-col justify-between selection:bg-amber-500/30 selection:text-amber-200 relative overflow-x-hidden font-sans">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-amber-500/30 selection:text-amber-200 relative overflow-x-hidden font-sans">
 
   <!-- 神祕動態星空 Canvas 背景 -->
   <canvas id="starfield" class="fixed inset-0 pointer-events-none z-0"></canvas>
