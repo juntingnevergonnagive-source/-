@@ -237,12 +237,12 @@ async function handleDrawCard() {
   // 2. 顯示卡牌區
   renderCards(selectedCards);
   document.getElementById('cardDisplayArea').classList.remove('hidden');
-  
+
   // 3. 顯示 AI 載入區域
   document.getElementById('resultArea').classList.remove('hidden');
   document.getElementById('loadingSpinner').classList.remove('hidden');
   document.getElementById('aiReadingContent').classList.add('hidden');
-  
+
   // 平滑滾動到卡牌區
   document.getElementById('cardDisplayArea').scrollIntoView({ behavior: 'smooth' });
 
@@ -270,7 +270,7 @@ function renderCards(cards) {
   cards.forEach((card) => {
     const cardEl = document.createElement('div');
     cardEl.className = 'tarot-card w-48 h-72 bg-slate-950/90 border-2 border-amber-500/50 rounded-xl p-4 flex flex-col justify-between items-center text-center backdrop-blur-md cursor-pointer';
-    
+
     cardEl.innerHTML = `
       <div class="text-xs text-amber-400 font-bold tracking-widest uppercase border-b border-amber-500/30 pb-1.5 w-full font-serif-tc">
         ${card.positionLabel}
@@ -292,10 +292,10 @@ function renderCards(cards) {
   });
 }
 
-// 呼叫 Gemini API（以最新指定模型 gemini-3.6-flash 為第一優先）
+// 呼叫 Gemini API（依序嘗試目前實際可用的穩定模型）
 async function fetchGeminiReading(apiKey, question, cards) {
   const cardsText = cards.map(c => `・${c.positionLabel}：${c.name}（${c.isReversed ? '逆位' : '正位'}）- 核心語意：${c.keyword}`).join('\n');
-  
+
   const prompt = `你是一位精通 78 張韋特塔羅牌與心理諮商學的專業塔羅神秘學大師。
 請針對問卜者的問題，與本次抽出的牌陣進行詳細、具體且富有洞察力的深度解牌。
 
@@ -311,16 +311,15 @@ ${cardsText}
 
 請保持文筆溫暖、睿智、富含啟發性與心理指引價值。`;
 
-  // 依據提示要求的最新模型順序輪詢
+  // 目前實際存在、免費 API Key 也能存取的穩定模型（依優先順序）
   const modelList = [
-    'gemini-3.6-flash',
-    'gemini-3.1-pro-preview',
-    'gemini-1.5-flash',
-    'gemini-1.5-pro'
+    'gemini-2.5-flash',
+    'gemini-2.0-flash-001',
+    'gemini-2.5-flash-lite'
   ];
 
   let success = false;
-  let lastErrorMessage = "";
+  let errorLog = [];
   const cleanKey = apiKey.trim();
 
   for (const modelName of modelList) {
@@ -338,13 +337,13 @@ ${cardsText}
       const data = await response.json();
 
       if (data.error) {
-        lastErrorMessage = `[${modelName}] ${data.error.message || JSON.stringify(data.error)}`;
+        errorLog.push(`[${modelName}] ${data.error.message || JSON.stringify(data.error)}`);
         continue;
       }
 
       if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
         const aiReply = data.candidates[0].content.parts[0].text;
-        
+
         const formattedHtml = aiReply
           .split('\n\n')
           .map(p => `<p class="mb-3 leading-relaxed">${p.replace(/\n/g, '<br>')}</p>`)
@@ -356,9 +355,11 @@ ${cardsText}
         contentDiv.classList.remove('hidden');
         success = true;
         break;
+      } else {
+        errorLog.push(`[${modelName}] 回應中沒有可用的內容（可能被安全設定擋下）`);
       }
     } catch (err) {
-      lastErrorMessage = err.message;
+      errorLog.push(`[${modelName}] 連線例外：${err.message}`);
     }
   }
 
@@ -368,8 +369,8 @@ ${cardsText}
     contentDiv.innerHTML = `
       <div class="p-4 bg-red-950/50 border border-red-500/60 rounded-xl text-red-200 text-sm space-y-2">
         <p class="font-bold text-red-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 解牌連線失敗</p>
-        <p class="text-xs text-slate-300">錯誤訊息：${lastErrorMessage}</p>
-        <p class="text-xs text-slate-400">請嘗試：<br>1. 按 Ctrl+F5 (Mac: Cmd+Shift+R) 清除瀏覽器快取<br>2. 確保 API Key 前後無複製到多餘空白字符。</p>
+        <p class="text-xs text-slate-300 whitespace-pre-line">${errorLog.join('\n')}</p>
+        <p class="text-xs text-slate-400">請嘗試：<br>1. 確認 API Key 是否正確、前後無多餘空白字符<br>2. 到 Google AI Studio 確認該金鑰有啟用 Gemini API 配額<br>3. 按 Ctrl+F5 (Mac: Cmd+Shift+R) 清除瀏覽器快取</p>
       </div>
     `;
     contentDiv.classList.remove('hidden');
