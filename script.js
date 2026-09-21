@@ -292,7 +292,7 @@ function renderCards(cards) {
   });
 }
 
-// 呼叫 Gemini API（依序嘗試目前實際可用的穩定模型）
+// 呼叫 Gemini API（依序嘗試目前實際可用的模型）
 async function fetchGeminiReading(apiKey, question, cards) {
   const cardsText = cards.map(c => `・${c.positionLabel}：${c.name}（${c.isReversed ? '逆位' : '正位'}）- 核心語意：${c.keyword}`).join('\n');
 
@@ -311,11 +311,10 @@ ${cardsText}
 
 請保持文筆溫暖、睿智、富含啟發性與心理指引價值。`;
 
-  // 目前實際存在、免費 API Key 也能存取的穩定模型（依優先順序）
+  // 替換為圖片中建議的模型清單
   const modelList = [
-    'gemini-2.5-flash',
-    'gemini-2.0-flash-001',
-    'gemini-2.5-flash-lite'
+    'gemini-3.6-flash',
+    'gemini-3.5-flash-lite' // 備用
   ];
 
   let success = false;
