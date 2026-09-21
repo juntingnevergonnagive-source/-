@@ -1,6 +1,6 @@
-// 完整 78 張塔羅牌資料庫 (22 張大阿爾克那 + 56 張小阿爾克那)
+// 完整 78 張韋特塔羅牌資料庫
 const tarotDeck = [
-  // ---------------- 大阿爾克那 (Major Arcana 22張) ----------------
+  // 大阿爾克那 (Major Arcana 22張)
   { name: "0. 愚者 (The Fool)", keyword: "新的開始、冒險、自由、純真" },
   { name: "I. 魔術師 (The Magician)", keyword: "創造力、技能、意志力、資源" },
   { name: "II. 女祭司 (The High Priestess)", keyword: "直覺、潛意識、智慧、神祕" },
@@ -24,7 +24,7 @@ const tarotDeck = [
   { name: "XX. 審判 (Judgment)", keyword: "召喚、覺醒、反省、重大決定" },
   { name: "XXI. 世界 (The World)", keyword: "圓滿、完成、旅程終點、整體" },
 
-  // ---------------- 權杖牌組 (Wands - 火元素 14張) ----------------
+  // 權杖牌組 (Wands 14張)
   { name: "權杖首牌 (Ace of Wands)", keyword: "靈感、新熱情、衝勁、潛力" },
   { name: "權杖二 (Two of Wands)", keyword: "規劃、遠見、抉擇、探索" },
   { name: "權杖三 (Three of Wands)", keyword: "擴張、遠景、進展、準備出發" },
@@ -40,7 +40,7 @@ const tarotDeck = [
   { name: "權杖王后 (Queen of Wands)", keyword: "自信、魅力、熱情、獨立" },
   { name: "權杖國王 (King of Wands)", keyword: "領導力、願景、果斷、企業家精神" },
 
-  // ---------------- 聖杯牌組 (Cups - 水元素 14張) ----------------
+  // 聖杯牌組 (Cups 14張)
   { name: "聖杯首牌 (Ace of Cups)", keyword: "新情感、愛、直覺、心靈豐沛" },
   { name: "聖杯二 (Two of Cups)", keyword: "夥伴關係、吸引力、互信、合作" },
   { name: "聖杯三 (Three of Cups)", keyword: "歡慶、友誼、聚會、分享" },
@@ -54,9 +54,9 @@ const tarotDeck = [
   { name: "聖杯侍從 (Page of Cups)", keyword: "感性訊息、創意、直覺萌芽" },
   { name: "聖杯騎士 (Knight of Cups)", keyword: "浪漫、追求者、理想主義、邀請" },
   { name: "聖杯王后 (Queen of Cups)", keyword: "同理心、溫柔、直覺強大、滋養" },
-  { name: "聖杯國王 (King of Kings)", keyword: "情感成熟、掌控情緒、包容、智慧" },
+  { name: "聖杯國王 (King of Cups)", keyword: "情感成熟、掌控情緒、包容、智慧" },
 
-  // ---------------- 寶劍牌組 (Swords - 風元素 14張) ----------------
+  // 寶劍牌組 (Swords 14張)
   { name: "寶劍首牌 (Ace of Swords)", keyword: "突破、清晰思考、真相、心智力量" },
   { name: "寶劍二 (Two of Swords)", keyword: "僵局、逃避決定、抗拒真相" },
   { name: "寶劍三 (Three of Swords)", keyword: "心碎、傷痛、悲傷、言語傷害" },
@@ -72,7 +72,7 @@ const tarotDeck = [
   { name: "寶劍王后 (Queen of Swords)", keyword: "理性、獨立思考、清晰邊界、直言" },
   { name: "寶劍國王 (King of Swords)", keyword: "專業權威、公正決策、邏輯強大" },
 
-  // ---------------- 星幣/金幣牌組 (Pentacles - 土元素 14張) ----------------
+  // 星幣/金幣牌組 (Pentacles 14張)
   { name: "星幣首牌 (Ace of Pentacles)", keyword: "新財務機會、實質回報、繁榮" },
   { name: "星幣二 (Two of Pentacles)", keyword: "平衡資源、多工作業、適應力" },
   { name: "星幣三 (Three of Pentacles)", keyword: "團隊合作、技能展現、建立基礎" },
@@ -89,7 +89,102 @@ const tarotDeck = [
   { name: "星幣國王 (King of Pentacles)", keyword: "商業成功、物質豐盛、穩定掌控" }
 ];
 
-// 處理抽牌邏輯
+// 初始化星空 Canvas 背景
+function initStarfield() {
+  const canvas = document.getElementById('starfield');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let stars = [];
+  let shootingStars = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    stars = [];
+    const count = Math.floor((canvas.width * canvas.height) / 3000);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.5,
+        alpha: Math.random(),
+        speed: Math.random() * 0.015 + 0.005,
+        color: Math.random() > 0.3 ? '#fff' : (Math.random() > 0.5 ? '#fde047' : '#c084fc')
+      });
+    }
+  }
+
+  function drawStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const gradient = ctx.createRadialGradient(
+      canvas.width / 2, canvas.height / 3, 50,
+      canvas.width / 2, canvas.height / 3, canvas.width * 0.8
+    );
+    gradient.addColorStop(0, 'rgba(30, 27, 75, 0.4)');
+    gradient.addColorStop(0.5, 'rgba(15, 23, 42, 0.8)');
+    gradient.addColorStop(1, 'rgba(3, 7, 18, 1)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    stars.forEach(star => {
+      star.alpha += star.speed;
+      if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
+
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      ctx.fillStyle = star.color;
+      ctx.globalAlpha = Math.max(0, Math.min(1, star.alpha));
+      ctx.fill();
+    });
+
+    if (Math.random() < 0.02) {
+      shootingStars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * (canvas.height / 2),
+        length: Math.random() * 80 + 40,
+        speed: Math.random() * 8 + 4,
+        alpha: 1,
+        angle: Math.PI / 4
+      });
+    }
+
+    for (let i = shootingStars.length - 1; i >= 0; i--) {
+      const s = shootingStars[i];
+      s.x += Math.cos(s.angle) * s.speed;
+      s.y += Math.sin(s.angle) * s.speed;
+      s.alpha -= 0.015;
+
+      if (s.alpha <= 0) {
+        shootingStars.splice(i, 1);
+        continue;
+      }
+
+      ctx.beginPath();
+      const tailX = s.x - Math.cos(s.angle) * s.length;
+      const tailY = s.y - Math.sin(s.angle) * s.length;
+      const lineGrad = ctx.createLinearGradient(s.x, s.y, tailX, tailY);
+      lineGrad.addColorStop(0, `rgba(253, 224, 71, ${s.alpha})`);
+      lineGrad.addColorStop(1, `rgba(253, 224, 71, 0)`);
+
+      ctx.strokeStyle = lineGrad;
+      ctx.lineWidth = 1.8;
+      ctx.moveTo(s.x, s.y);
+      ctx.lineTo(tailX, tailY);
+      ctx.stroke();
+    }
+
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(drawStars);
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  drawStars();
+}
+
+// 處理抽牌按鈕觸發邏輯
 async function handleDrawCard() {
   const userQuestion = document.getElementById('userQuestion').value.trim();
   const apiKey = document.getElementById('apiKeyInput').value.trim();
@@ -101,17 +196,17 @@ async function handleDrawCard() {
   }
 
   if (!apiKey) {
-    alert("請先貼上你的 Gemini API Key！");
+    alert("請輸入 Gemini API Key 以開啟 AI 解牌功能！");
     return;
   }
 
-  // 1. 根據牌陣決定抽牌張數
+  // 1. 洗牌並隨機抽牌
   let cardCount = spreadType === 'single' ? 1 : 3;
   let selectedCards = [];
   let shuffled = [...tarotDeck].sort(() => 0.5 - Math.random());
 
   for (let i = 0; i < cardCount; i++) {
-    const isReversed = Math.random() < 0.3; // 30% 機率逆位
+    const isReversed = Math.random() < 0.3; // 30% 機率洗出逆位
     selectedCards.push({
       ...shuffled[i],
       isReversed: isReversed,
@@ -119,35 +214,35 @@ async function handleDrawCard() {
     });
   }
 
-  // 2. 顯示卡牌區
+  // 2. 繪製卡牌區
   renderCards(selectedCards);
   document.getElementById('cardDisplayArea').classList.remove('hidden');
   
-  // 3. 顯示 AI 解牌區並載入中
+  // 3. 顯示 AI 載入區域
   document.getElementById('resultArea').classList.remove('hidden');
   document.getElementById('loadingSpinner').classList.remove('hidden');
   document.getElementById('aiReadingContent').classList.add('hidden');
   
-  // 平滑滾動到卡牌區
+  // 捲動畫面到卡牌區
   document.getElementById('cardDisplayArea').scrollIntoView({ behavior: 'smooth' });
 
-  // 4. 呼叫 Gemini API 進行解牌
+  // 4. 呼叫 Gemini AI 進行深度解牌
   await fetchGeminiReading(apiKey, userQuestion, selectedCards);
 }
 
-// 取得牌陣位置名稱
+// 取得位置標籤
 function getPositionLabel(spreadType, index) {
-  if (spreadType === 'single') return '指引牌';
+  if (spreadType === 'single') return '核心指引牌';
   if (spreadType === 'timeline') {
-    return ['過去脈絡', '現在狀態', '未來趨勢'][index];
+    return ['【過去脈絡】', '【現在狀態】', '【未來趨勢】'][index];
   }
   if (spreadType === 'choices') {
-    return ['選項 A 狀態', '選項 B 狀態', '綜合智慧建議'][index];
+    return ['【選項 A 狀態】', '【選項 B 狀態】', '【綜合智慧建議】'][index];
   }
   return `第 ${index + 1} 張`;
 }
 
-// 渲染卡牌 HTML
+// 渲染卡牌
 function renderCards(cards) {
   const container = document.getElementById('cardsContainer');
   container.innerHTML = '';
@@ -177,65 +272,88 @@ function renderCards(cards) {
   });
 }
 
-// 呼叫 Gemini API
+// 呼叫 Gemini API（相容最新 REST API）
 async function fetchGeminiReading(apiKey, question, cards) {
   const cardsText = cards.map(c => `・${c.positionLabel}：${c.name}（${c.isReversed ? '逆位' : '正位'}）- 核心語意：${c.keyword}`).join('\n');
   
-  const prompt = `你是一位精通塔羅牌與心理學的專業塔羅占卜師。
-請根據問卜者的問題與抽出的牌陣，提供一段溫暖、深刻且具有實用指引價值的解牌分析。
+  const prompt = `你是一位精通 78 張韋特塔羅牌與心理諮商學的專業塔羅神秘學大師。
+請針對問卜者的問題，與本次抽出的牌陣進行詳細、具體且富有洞察力的深度解牌。
 
-【問卜者問題】：${question}
+【問卜者提問】：${question}
 
 【抽出的牌陣】：
 ${cardsText}
 
-請用繁體中文回答，架構包含：
-1. 🌟 **總體能量回應**：針對問題簡述當前的能量狀態。
-2. 🔮 **牌面詳細剖析**：逐張解析每張牌在此位置代表的涵義。
-3. 💡 **命運與行動建議**：給予問卜者具體可執行的指引與心態調整建議。`;
+請以繁體中文撰寫一份完整詳細的解牌報告，文章結構請包含：
+1. 🌟 **總體能量與局勢分析**：針對問卜者的問題，說明目前整體能量場與的核心情況。
+2. 🔮 **牌面深度剖析與象徵意涵**：逐張詳細解說每張牌（含正/逆位）在其位置所代表的內在心理狀態、外在環境影響與牌面隱喻。
+3. 💡 **關鍵引導與行動建議**：針對該問題給予具體、切實可行的行動方針與心態調整建議。
 
-  try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{ text: prompt }]
-        }]
-      })
-    });
+請保持文筆溫暖、睿智、富含啟發性與心理指引價值。`;
 
-    const data = await response.json();
+  // 嘗試多個 Gemini REST API endpoint
+  const apiUrls = [
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`
+  ];
 
-    if (data.error) {
-      throw new Error(data.error.message || "API 金鑰無效或請求失敗");
+  let success = false;
+  let lastErrorMessage = "";
+
+  for (const url of apiUrls) {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        lastErrorMessage = data.error.message || JSON.stringify(data.error);
+        continue; // 嘗試下一個 URL
+      }
+
+      if (data.candidates && data.candidates[0].content.parts[0].text) {
+        const aiReply = data.candidates[0].content.parts[0].text;
+        
+        // 排版處理 Markdown / 段落格式
+        const formattedHtml = aiReply
+          .split('\n\n')
+          .map(p => `<p class="mb-3 leading-relaxed">${p.replace(/\n/g, '<br>')}</p>`)
+          .join('');
+
+        document.getElementById('loadingSpinner').classList.add('hidden');
+        const contentDiv = document.getElementById('aiReadingContent');
+        contentDiv.innerHTML = formattedHtml;
+        contentDiv.classList.remove('hidden');
+        success = true;
+        break;
+      }
+    } catch (err) {
+      lastErrorMessage = err.message;
     }
+  }
 
-    const aiReply = data.candidates[0].content.parts[0].text;
-    
-    // 格式化 AI 解讀內容
-    const formattedHtml = aiReply
-      .split('\n\n')
-      .map(p => `<p class="mb-3 leading-relaxed">${p.replace(/\n/g, '<br>')}</p>`)
-      .join('');
-
-    document.getElementById('loadingSpinner').classList.add('hidden');
-    const contentDiv = document.getElementById('aiReadingContent');
-    contentDiv.innerHTML = formattedHtml;
-    contentDiv.classList.remove('hidden');
-
-  } catch (error) {
-    console.error("Gemini API Error:", error);
+  // 若發送請求失敗時的提示
+  if (!success) {
     document.getElementById('loadingSpinner').classList.add('hidden');
     const contentDiv = document.getElementById('aiReadingContent');
     contentDiv.innerHTML = `
-      <div class="p-4 bg-red-950/40 border border-red-500/50 rounded-xl text-red-200 text-sm">
-        <p class="font-bold">❌ 解牌失敗：${error.message}</p>
-        <p class="mt-1 text-xs text-slate-400">請檢查：<br>1. API Key 是否貼錯（開頭應為 AIzaSy...，且不要有前後空格）<br>2. 是否已在 Google AI Studio 開通帳號權限。</p>
+      <div class="p-4 bg-red-950/40 border border-red-500/50 rounded-xl text-red-200 text-sm space-y-2">
+        <p class="font-bold text-red-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 連線 API 失敗</p>
+        <p class="text-xs text-slate-300">錯誤訊息：${lastErrorMessage}</p>
+        <p class="text-xs text-slate-400">請確認：<br>1. 複製的 API Key 無多餘空格，且開頭為 AIzaSy...<br>2. 該 API Key 已在 Google AI Studio 開通權限。</p>
       </div>
     `;
     contentDiv.classList.remove('hidden');
   }
 }
+
+// 頁面載入完成後啟動星空背景
+window.addEventListener('DOMContentLoaded', () => {
+  initStarfield();
+});
