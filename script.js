@@ -292,7 +292,7 @@ function renderCards(cards) {
   });
 }
 
-// 呼叫 Gemini API (更新為最新提示要求的 gemini-3.1-pro-preview 及最新模型)
+// 呼叫 Gemini API（以最新指定模型 gemini-3.6-flash 為第一優先）
 async function fetchGeminiReading(apiKey, question, cards) {
   const cardsText = cards.map(c => `・${c.positionLabel}：${c.name}（${c.isReversed ? '逆位' : '正位'}）- 核心語意：${c.keyword}`).join('\n');
   
@@ -311,11 +311,12 @@ ${cardsText}
 
 請保持文筆溫暖、睿智、富含啟發性與心理指引價值。`;
 
-  // 優先使用 Google 最新說明的 gemini-3.1-pro-preview
+  // 依據提示要求的最新模型順序輪詢
   const modelList = [
+    'gemini-3.6-flash',
     'gemini-3.1-pro-preview',
-    'gemini-2.5-flash',
-    'gemini-2.0-flash'
+    'gemini-1.5-flash',
+    'gemini-1.5-pro'
   ];
 
   let success = false;
@@ -337,7 +338,7 @@ ${cardsText}
       const data = await response.json();
 
       if (data.error) {
-        lastErrorMessage = data.error.message || JSON.stringify(data.error);
+        lastErrorMessage = `[${modelName}] ${data.error.message || JSON.stringify(data.error)}`;
         continue;
       }
 
@@ -368,7 +369,7 @@ ${cardsText}
       <div class="p-4 bg-red-950/50 border border-red-500/60 rounded-xl text-red-200 text-sm space-y-2">
         <p class="font-bold text-red-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 解牌連線失敗</p>
         <p class="text-xs text-slate-300">錯誤訊息：${lastErrorMessage}</p>
-        <p class="text-xs text-slate-400">請嘗試：<br>1. 按 Ctrl+F5 (Mac: Cmd+Shift+R) 強制重新整理頁面<br>2. 確保貼上的 API Key 沒有複製到前後多餘空白。</p>
+        <p class="text-xs text-slate-400">請嘗試：<br>1. 按 Ctrl+F5 (Mac: Cmd+Shift+R) 清除瀏覽器快取<br>2. 確保 API Key 前後無複製到多餘空白字符。</p>
       </div>
     `;
     contentDiv.classList.remove('hidden');
