@@ -89,7 +89,7 @@ const tarotDeck = [
   { name: "星幣國王 (King of Pentacles)", keyword: "商業成功、物質豐盛、穩定掌控" }
 ];
 
-// 升級版帥氣星空與動態星雲動畫引擎
+// 帥氣動態紫金星雲與閃爍繁星 Canvas 渲染
 function initStarfield() {
   const canvas = document.getElementById('starfield');
   if (!canvas) return;
@@ -103,16 +103,16 @@ function initStarfield() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     stars = [];
-    const count = Math.floor((canvas.width * canvas.height) / 2200);
+    const count = Math.floor((canvas.width * canvas.height) / 2000);
     const colors = ['#ffffff', '#fde047', '#c084fc', '#60a5fa', '#f472b6'];
 
     for (let i = 0; i < count; i++) {
       stars.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        radius: Math.random() * 1.8 + 0.3,
+        radius: Math.random() * 2 + 0.5,
         alpha: Math.random(),
-        speed: Math.random() * 0.02 + 0.008,
+        speed: Math.random() * 0.025 + 0.008,
         color: colors[Math.floor(Math.random() * colors.length)]
       });
     }
@@ -121,32 +121,32 @@ function initStarfield() {
   function drawScene() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 1. 深邃暗黑底色
+    // 1. 純黑背景底色
     ctx.fillStyle = '#030712';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // 2. 動態旋轉紫金星雲特效
-    nebulaAngle += 0.002;
+    nebulaAngle += 0.003;
     const cx = canvas.width / 2;
     const cy = canvas.height / 3;
 
     // 紫色星雲光暈
     const grad1 = ctx.createRadialGradient(
-      cx + Math.cos(nebulaAngle) * 80, cy + Math.sin(nebulaAngle) * 50, 20,
-      cx, cy, canvas.width * 0.7
+      cx + Math.cos(nebulaAngle) * 90, cy + Math.sin(nebulaAngle) * 60, 20,
+      cx, cy, canvas.width * 0.75
     );
-    grad1.addColorStop(0, 'rgba(88, 28, 135, 0.35)');
-    grad1.addColorStop(0.5, 'rgba(30, 27, 75, 0.2)');
+    grad1.addColorStop(0, 'rgba(88, 28, 135, 0.45)');
+    grad1.addColorStop(0.5, 'rgba(30, 27, 75, 0.25)');
     grad1.addColorStop(1, 'rgba(3, 7, 18, 0)');
     ctx.fillStyle = grad1;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // 金色星雲光暈
     const grad2 = ctx.createRadialGradient(
-      cx - Math.sin(nebulaAngle) * 100, cy - Math.cos(nebulaAngle) * 60, 10,
-      cx, cy, canvas.width * 0.5
+      cx - Math.sin(nebulaAngle) * 110, cy - Math.cos(nebulaAngle) * 70, 10,
+      cx, cy, canvas.width * 0.55
     );
-    grad2.addColorStop(0, 'rgba(217, 119, 6, 0.18)');
+    grad2.addColorStop(0, 'rgba(217, 119, 6, 0.22)');
     grad2.addColorStop(1, 'rgba(3, 7, 18, 0)');
     ctx.fillStyle = grad2;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -164,12 +164,12 @@ function initStarfield() {
     });
 
     // 4. 帥氣流星劃過天際
-    if (Math.random() < 0.03) {
+    if (Math.random() < 0.035) {
       shootingStars.push({
         x: Math.random() * canvas.width * 0.8,
         y: Math.random() * (canvas.height * 0.4),
-        length: Math.random() * 120 + 60,
-        speed: Math.random() * 10 + 6,
+        length: Math.random() * 140 + 70,
+        speed: Math.random() * 12 + 7,
         alpha: 1,
         angle: Math.PI / 4
       });
@@ -179,7 +179,7 @@ function initStarfield() {
       const s = shootingStars[i];
       s.x += Math.cos(s.angle) * s.speed;
       s.y += Math.sin(s.angle) * s.speed;
-      s.alpha -= 0.018;
+      s.alpha -= 0.02;
 
       if (s.alpha <= 0) {
         shootingStars.splice(i, 1);
@@ -191,11 +191,11 @@ function initStarfield() {
       const tailY = s.y - Math.sin(s.angle) * s.length;
       const lineGrad = ctx.createLinearGradient(s.x, s.y, tailX, tailY);
       lineGrad.addColorStop(0, `rgba(253, 224, 71, ${s.alpha})`);
-      lineGrad.addColorStop(0.5, `rgba(168, 85, 247, ${s.alpha * 0.6})`);
+      lineGrad.addColorStop(0.5, `rgba(168, 85, 247, ${s.alpha * 0.7})`);
       lineGrad.addColorStop(1, `rgba(253, 224, 71, 0)`);
 
       ctx.strokeStyle = lineGrad;
-      ctx.lineWidth = 2.2;
+      ctx.lineWidth = 2.5;
       ctx.moveTo(s.x, s.y);
       ctx.lineTo(tailX, tailY);
       ctx.stroke();
@@ -210,7 +210,7 @@ function initStarfield() {
   drawScene();
 }
 
-// 處理抽牌按鈕觸發邏輯
+// 抽牌處理
 async function handleDrawCard() {
   const userQuestion = document.getElementById('userQuestion').value.trim();
   const apiKey = document.getElementById('apiKeyInput').value.trim();
@@ -232,7 +232,7 @@ async function handleDrawCard() {
   let shuffled = [...tarotDeck].sort(() => 0.5 - Math.random());
 
   for (let i = 0; i < cardCount; i++) {
-    const isReversed = Math.random() < 0.3; // 30% 機率逆位
+    const isReversed = Math.random() < 0.3;
     selectedCards.push({
       ...shuffled[i],
       isReversed: isReversed,
@@ -252,7 +252,7 @@ async function handleDrawCard() {
   // 平滑滾動到卡牌區
   document.getElementById('cardDisplayArea').scrollIntoView({ behavior: 'smooth' });
 
-  // 4. 呼叫 Gemini API 進行深度解牌
+  // 4. 呼叫 Gemini AI
   await fetchGeminiReading(apiKey, userQuestion, selectedCards);
 }
 
@@ -268,7 +268,7 @@ function getPositionLabel(spreadType, index) {
   return `第 ${index + 1} 張`;
 }
 
-// 渲染卡牌 HTML
+// 渲染卡牌
 function renderCards(cards) {
   const container = document.getElementById('cardsContainer');
   container.innerHTML = '';
@@ -298,7 +298,7 @@ function renderCards(cards) {
   });
 }
 
-// 呼叫 Gemini API 進行解牌
+// 呼叫 Gemini API
 async function fetchGeminiReading(apiKey, question, cards) {
   const cardsText = cards.map(c => `・${c.positionLabel}：${c.name}（${c.isReversed ? '逆位' : '正位'}）- 核心語意：${c.keyword}`).join('\n');
   
@@ -317,7 +317,6 @@ ${cardsText}
 
 請保持文筆溫暖、睿智、富含啟發性與心理指引價值。`;
 
-  // 支援多個模型版本備用
   const apiUrls = [
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
     `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`
@@ -370,14 +369,14 @@ ${cardsText}
       <div class="p-4 bg-red-950/50 border border-red-500/60 rounded-xl text-red-200 text-sm space-y-2">
         <p class="font-bold text-red-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 解牌連線失敗</p>
         <p class="text-xs text-slate-300">錯誤訊息：${lastErrorMessage}</p>
-        <p class="text-xs text-slate-400">請檢查：<br>1. API Key 是否複製完整（不要包含前後空格）<br>2. 是否已在 Google AI Studio 開通帳號權限。</p>
+        <p class="text-xs text-slate-400">請檢查：<br>1. API Key 是否複製完整<br>2. 是否已在 Google AI Studio 開通權限。</p>
       </div>
     `;
     contentDiv.classList.remove('hidden');
   }
 }
 
-// 頁面載入後立即啟動星空動畫
-window.addEventListener('load', () => {
+// 頁面載入觸發星空繪製
+window.addEventListener('DOMContentLoaded', () => {
   initStarfield();
 });
