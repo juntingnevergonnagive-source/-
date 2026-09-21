@@ -1,7 +1,7 @@
-/* 全域底色與基礎設定 - 確保 background 絕不變白 */
+/* 強制注入最深邃的星空暗黑背景 */
 html, body {
   background-color: #030712 !important;
-  color: #f1f5f9;
+  color: #f1f5f9 !important;
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -9,7 +9,19 @@ html, body {
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* 自訂字體 */
+/* 全螢幕星空 Canvas 強制定位 */
+#starfield {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0 !important;
+  pointer-events: none;
+  background-color: #030712 !important;
+}
+
+/* 神祕字體分流 */
 .font-mystic-en {
   font-family: 'Cinzel Decorative', serif;
 }
@@ -18,28 +30,28 @@ html, body {
   font-family: 'Noto Serif TC', serif;
 }
 
-/* 帥氣發光特效 */
+/* 霓虹發光文字特效 */
 .glow-text-gold {
-  text-shadow: 0 0 12px rgba(245, 158, 11, 0.7), 0 0 25px rgba(217, 119, 6, 0.5), 0 0 40px rgba(180, 83, 9, 0.3);
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.8), 0 0 25px rgba(217, 119, 6, 0.6), 0 0 45px rgba(180, 83, 9, 0.4);
 }
 
 .glow-text-purple {
-  text-shadow: 0 0 12px rgba(168, 85, 247, 0.7), 0 0 25px rgba(147, 51, 234, 0.5);
+  text-shadow: 0 0 12px rgba(168, 85, 247, 0.8), 0 0 25px rgba(147, 51, 234, 0.6);
 }
 
-/* 塔羅卡牌 3D 浮動與紫金流光特效 */
+/* 塔羅卡牌 3D 浮起與外發光 */
 .tarot-card {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 0 15px rgba(147, 51, 234, 0.25), inset 0 0 15px rgba(245, 158, 11, 0.1);
+  transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 0 20px rgba(147, 51, 234, 0.3), inset 0 0 15px rgba(245, 158, 11, 0.15);
 }
 
 .tarot-card:hover {
-  transform: translateY(-8px) scale(1.04);
-  box-shadow: 0 12px 30px rgba(168, 85, 247, 0.4), 0 0 20px rgba(245, 158, 11, 0.5), inset 0 0 20px rgba(245, 158, 11, 0.2);
-  border-color: rgba(245, 158, 11, 0.9);
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(168, 85, 247, 0.5), 0 0 25px rgba(245, 158, 11, 0.7), inset 0 0 20px rgba(245, 158, 11, 0.3);
+  border-color: rgba(245, 158, 11, 1);
 }
 
-/* 滾動條美化 */
+/* 暗黑質感滾動條 */
 ::-webkit-scrollbar {
   width: 8px;
 }
