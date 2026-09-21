@@ -89,7 +89,7 @@ const tarotDeck = [
   { name: "星幣國王 (King of Pentacles)", keyword: "商業成功、物質豐盛、穩定掌控" }
 ];
 
-// 帥氣動態紫金星雲與閃爍繁星 Canvas 渲染
+// 動態紫金星雲與閃爍繁星 Canvas 渲染
 function initStarfield() {
   const canvas = document.getElementById('starfield');
   if (!canvas) return;
@@ -121,16 +121,13 @@ function initStarfield() {
   function drawScene() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 1. 純黑背景底色
     ctx.fillStyle = '#030712';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 2. 動態旋轉紫金星雲特效
     nebulaAngle += 0.003;
     const cx = canvas.width / 2;
     const cy = canvas.height / 3;
 
-    // 紫色星雲光暈
     const grad1 = ctx.createRadialGradient(
       cx + Math.cos(nebulaAngle) * 90, cy + Math.sin(nebulaAngle) * 60, 20,
       cx, cy, canvas.width * 0.75
@@ -141,7 +138,6 @@ function initStarfield() {
     ctx.fillStyle = grad1;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 金色星雲光暈
     const grad2 = ctx.createRadialGradient(
       cx - Math.sin(nebulaAngle) * 110, cy - Math.cos(nebulaAngle) * 70, 10,
       cx, cy, canvas.width * 0.55
@@ -151,7 +147,6 @@ function initStarfield() {
     ctx.fillStyle = grad2;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // 3. 繪製閃爍繁星
     stars.forEach(star => {
       star.alpha += star.speed;
       if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
@@ -163,7 +158,6 @@ function initStarfield() {
       ctx.fill();
     });
 
-    // 4. 帥氣流星劃過天際
     if (Math.random() < 0.035) {
       shootingStars.push({
         x: Math.random() * canvas.width * 0.8,
@@ -298,7 +292,7 @@ function renderCards(cards) {
   });
 }
 
-// 呼叫 Gemini API
+// 呼叫 Gemini API (相容 Gemini 2.5 / 2.0 最新官方模型 endpoint)
 async function fetchGeminiReading(apiKey, question, cards) {
   const cardsText = cards.map(c => `・${c.positionLabel}：${c.name}（${c.isReversed ? '逆位' : '正位'}）- 核心語意：${c.keyword}`).join('\n');
   
@@ -317,15 +311,19 @@ ${cardsText}
 
 請保持文筆溫暖、睿智、富含啟發性與心理指引價值。`;
 
-  const apiUrls = [
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`
+  // 嘗試最新標準模型順序
+  const modelList = [
+    'gemini-2.5-flash',
+    'gemini-2.0-flash',
+    'gemini-2.5-pro'
   ];
 
   let success = false;
   let lastErrorMessage = "";
 
-  for (const url of apiUrls) {
+  for (const modelName of modelList) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey.trim()}`;
+
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -342,7 +340,7 @@ ${cardsText}
         continue;
       }
 
-      if (data.candidates && data.candidates[0].content.parts[0].text) {
+      if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
         const aiReply = data.candidates[0].content.parts[0].text;
         
         const formattedHtml = aiReply
@@ -369,7 +367,7 @@ ${cardsText}
       <div class="p-4 bg-red-950/50 border border-red-500/60 rounded-xl text-red-200 text-sm space-y-2">
         <p class="font-bold text-red-400"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 解牌連線失敗</p>
         <p class="text-xs text-slate-300">錯誤訊息：${lastErrorMessage}</p>
-        <p class="text-xs text-slate-400">請檢查：<br>1. API Key 是否複製完整<br>2. 是否已在 Google AI Studio 開通權限。</p>
+        <p class="text-xs text-slate-400">請檢查：<br>1. API Key 前後是否有複製到多餘空白字符<br>2. 是否已在 Google AI Studio 建立並啟用 key。</p>
       </div>
     `;
     contentDiv.classList.remove('hidden');
@@ -379,4 +377,4 @@ ${cardsText}
 // 頁面載入觸發星空繪製
 window.addEventListener('DOMContentLoaded', () => {
   initStarfield();
-});
+});V
