@@ -1,5 +1,7 @@
-/* 強制注入最深邃的星空暗黑背景 */
-html, body {
+/* 1. 強制設定全域背景色與文字顏色，避免被 Tailwind 重置覆蓋 */
+html, 
+body, 
+:root {
   background-color: #030712 !important;
   color: #f1f5f9 !important;
   min-height: 100vh;
@@ -9,19 +11,19 @@ html, body {
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* 全螢幕星空 Canvas 強制定位 */
+/* 2. 全螢幕星空 Canvas 固定底層 */
 #starfield {
   position: fixed !important;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
   z-index: 0 !important;
   pointer-events: none;
   background-color: #030712 !important;
 }
 
-/* 神祕字體分流 */
+/* 3. 神祕字體設定 */
 .font-mystic-en {
   font-family: 'Cinzel Decorative', serif;
 }
@@ -30,16 +32,16 @@ html, body {
   font-family: 'Noto Serif TC', serif;
 }
 
-/* 霓虹發光文字特效 */
+/* 4. 發光效果 */
 .glow-text-gold {
-  text-shadow: 0 0 12px rgba(245, 158, 11, 0.8), 0 0 25px rgba(217, 119, 6, 0.6), 0 0 45px rgba(180, 83, 9, 0.4);
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.8), 0 0 25px rgba(217, 119, 6, 0.6);
 }
 
 .glow-text-purple {
   text-shadow: 0 0 12px rgba(168, 85, 247, 0.8), 0 0 25px rgba(147, 51, 234, 0.6);
 }
 
-/* 塔羅卡牌 3D 浮起與外發光 */
+/* 5. 卡牌效果 */
 .tarot-card {
   transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   box-shadow: 0 0 20px rgba(147, 51, 234, 0.3), inset 0 0 15px rgba(245, 158, 11, 0.15);
@@ -47,11 +49,11 @@ html, body {
 
 .tarot-card:hover {
   transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 15px 35px rgba(168, 85, 247, 0.5), 0 0 25px rgba(245, 158, 11, 0.7), inset 0 0 20px rgba(245, 158, 11, 0.3);
+  box-shadow: 0 15px 35px rgba(168, 85, 247, 0.5), 0 0 25px rgba(245, 158, 11, 0.7);
   border-color: rgba(245, 158, 11, 1);
 }
 
-/* 暗黑質感滾動條 */
+/* 6. 滾動條樣式 */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -61,8 +63,4 @@ html, body {
 ::-webkit-scrollbar-thumb {
   background: #3b0764;
   border-radius: 4px;
-  border: 1px solid rgba(245, 158, 11, 0.3);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #581c87;
 }
